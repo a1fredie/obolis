@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Obolis — Your Financial Edge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#08080f;--bg2:#0f0f1c;--bg3:#161626;--bg4:#1c1c30;
+  --blue:#4361EE;--blue2:#6580ff;--blue-dim:rgba(67,97,238,0.13);--blue-glow:rgba(67,97,238,0.4);
+  --green:#0fba74;--green-dim:rgba(15,186,116,0.13);
+  --red:#f04444;--red-dim:rgba(240,68,68,0.13);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,0.13);
+  --white:#fff;--gray1:#E8E8F5;--gray2:#8888A8;--gray3:#2a2a40;--border:rgba(255,255,255,0.06);
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --r:12px;--rl:20px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--gray1);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden;}
+
+/* noise */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6;}
+/* dot grid */
+body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
+section,nav,footer,.modal-overlay{position:relative;z-index:1;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(8,8,15,0.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);z-index:200;transition:background .3s;}
+.nav-logo{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--white);text-decoration:none;letter-spacing:-.5px;}
+.nav-logo span{color:var(--blue);}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--gray2);text-decoration:none;transition:color .2s;letter-spacing:.01em;}
+.nav-links a:hover{color:var(--white);}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.btn-ghost{padding:8px 20px;border:1px solid var(--gray3);border-radius:999px;background:transparent;color:var(--gray1);font-family:var(--fb);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-ghost:hover{border-color:var(--blue);color:var(--white);}
+.btn-primary{padding:9px 22px;border-radius:999px;background:var(--blue);color:var(--white);font-family:var(--fb);font-size:14px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .2s;}
+.btn-primary:hover{box-shadow:0 0 24px var(--blue-glow);opacity:.9;}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding:120px 5% 80px;gap:56px;}
+.hero-left{flex:1;max-width:560px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(67,97,238,0.35);background:var(--blue-dim);font-size:12px;color:#8fa8ff;font-weight:600;margin-bottom:28px;letter-spacing:.06em;text-transform:uppercase;}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-title{font-family:var(--fd);font-size:clamp(40px,5.5vw,72px);font-weight:800;line-height:1.04;letter-spacing:-2px;color:var(--white);margin-bottom:20px;}
+.hero-title .hl{background:linear-gradient(135deg,#4361EE 0%,#8fa8ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:17px;color:var(--gray2);line-height:1.75;margin-bottom:36px;max-width:460px;font-weight:300;}
+.hero-cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.btn-lg{padding:14px 32px;border-radius:999px;background:var(--blue);color:var(--white);font-family:var(--fb);font-size:16px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .25s;display:inline-block;}
+.btn-lg:hover{box-shadow:0 8px 36px var(--blue-glow);transform:translateY(-2px);}
+.hero-note{font-size:13px;color:var(--gray2);display:flex;align-items:center;gap:6px;}
+.hero-note::before{content:'✓';color:var(--green);font-weight:700;}
+.hero-stats{display:flex;gap:28px;margin-top:44px;padding-top:36px;border-top:1px solid var(--border);}
+.hstat{display:flex;flex-direction:column;gap:3px;}
+.hstat-val{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--white);}
+.hstat-label{font-size:12px;color:var(--gray2);font-weight:400;}
+
+/* ── DASHBOARD MOCKUP ── */
+.hero-right{flex:1;max-width:540px;position:relative;}
+.dash-wrap{position:relative;}
+.glow-orb{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(67,97,238,.18),transparent 70%);top:-60px;right:-60px;pointer-events:none;z-index:0;}
+.dashboard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;position:relative;z-index:1;box-shadow:0 40px 80px rgba(0,0,0,.5);}
+
+/* dash sidebar */
+.dash-inner{display:flex;height:480px;}
+.dash-sidebar{width:56px;background:var(--bg3);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:6px;}
+.side-logo{font-family:var(--fd);font-size:13px;font-weight:800;color:var(--blue);margin-bottom:14px;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);letter-spacing:.1em;}
+.side-btn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:background .2s;color:var(--gray2);}
+.side-btn:hover,.side-btn.active{background:var(--blue-dim);color:var(--blue);}
+.side-btn.active{background:var(--blue-dim);}
+
+/* dash main */
+.dash-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.dash-topbar{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.dash-topbar-title{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--white);}
+.dash-topbar-right{display:flex;align-items:center;gap:8px;}
+.dash-avatar{width:26px;height:26px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white);}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg2);}
+
+/* dash panels */
+.dash-panel{display:none;flex:1;overflow-y:auto;padding:16px;gap:12px;flex-direction:column;}
+.dash-panel.active{display:flex;}
+.dash-panel::-webkit-scrollbar{width:4px;}
+.dash-panel::-webkit-scrollbar-track{background:transparent;}
+.dash-panel::-webkit-scrollbar-thumb{background:var(--gray3);border-radius:2px;}
+
+/* widget */
+.dw{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;}
+.dw-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.dw-title{font-size:11px;font-weight:600;color:var(--gray2);letter-spacing:.07em;text-transform:uppercase;}
+.dw-badge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;}
+.badge-green{background:var(--green-dim);color:var(--green);}
+.badge-red{background:var(--red-dim);color:var(--red);}
+.badge-blue{background:var(--blue-dim);color:var(--blue2);}
+.badge-amber{background:var(--amber-dim);color:var(--amber);}
+.dw-val{font-family:var(--fd);font-size:26px;font-weight:800;color:var(--white);letter-spacing:-1px;line-height:1;}
+.dw-sub{font-size:12px;color:var(--gray2);margin-top:3px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+/* mini chart */
+.mchart{width:100%;height:64px;margin:10px 0 4px;}
+/* progress bar */
+.prog-wrap{margin-top:8px;}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--gray2);margin-bottom:5px;}
+.prog-track{height:6px;background:var(--bg4);border-radius:999px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:999px;transition:width 1s ease;}
+/* asset list */
+.asset-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.asset-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg4);border-radius:9px;cursor:pointer;transition:background .2s;}
+.asset-row:hover{background:rgba(67,97,238,.1);}
+.asset-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;font-family:var(--fd);}
+.asset-name{flex:1;}
+.asset-ticker{font-size:11px;color:var(--gray2);}
+.asset-label{font-size:13px;font-weight:600;color:var(--white);}
+.asset-right{text-align:right;}
+.asset-price{font-size:13px;font-weight:600;color:var(--white);font-family:var(--fd);}
+.asset-chg{font-size:11px;font-weight:600;}
+.chg-up{color:var(--green);}
+.chg-dn{color:var(--red);}
+/* tx list */
+.tx-list{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.tx-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);}
+.tx-row:last-child{border-bottom:none;}
+.tx-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.tx-desc{flex:1;}
+.tx-name{font-size:13px;color:var(--white);font-weight:500;}
+.tx-date{font-size:11px;color:var(--gray2);}
+.tx-amount{font-size:13px;font-weight:600;font-family:var(--fd);}
+/* ai insight bar */
+.ai-bar{display:flex;align-items:flex-start;gap:10px;background:var(--blue-dim);border:1px solid rgba(67,97,238,.2);border-radius:10px;padding:11px 13px;margin-top:2px;}
+.ai-icon-w{width:26px;height:26px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px;}
+.ai-text{font-size:12px;color:#8fa8ff;line-height:1.5;}
+.ai-text strong{color:var(--white);}
+/* candle chart */
+.candle-area{display:flex;align-items:flex-end;gap:4px;height:80px;margin:10px 0 4px;padding:0 2px;}
+.candle-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;}
+.candle-wick{width:1.5px;border-radius:1px;}
+.candle-body{width:10px;border-radius:2px;}
+/* news */
+.news-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.news-item{padding:10px;background:var(--bg4);border-radius:9px;cursor:pointer;transition:background .2s;}
+.news-item:hover{background:var(--blue-dim);}
+.news-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px;}
+.news-headline{font-size:12px;font-weight:500;color:var(--white);line-height:1.4;}
+.news-sentiment{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap;flex-shrink:0;}
+.sent-bull{background:var(--green-dim);color:var(--green);}
+.sent-bear{background:var(--red-dim);color:var(--red);}
+.sent-neut{background:var(--bg3);color:var(--gray2);}
+.news-meta{font-size:11px;color:var(--gray2);}
+/* portfolio donut */
+.donut-wrap{display:flex;align-items:center;gap:16px;margin-top:8px;}
+.donut-legend{flex:1;display:flex;flex-direction:column;gap:6px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray2);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.legend-val{margin-left:auto;font-weight:600;color:var(--white);font-size:12px;}
+/* sparkline */
+.spark{display:flex;align-items:flex-end;gap:2px;height:28px;}
+.spark-bar{flex:1;border-radius:2px;min-height:3px;}
+
+/* float badges */
+.float-badge{position:absolute;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:12px;font-weight:600;color:var(--white);box-shadow:0 8px 32px rgba(0,0,0,.5);white-space:nowrap;z-index:2;}
+.float-badge span{display:block;font-size:10px;color:var(--gray2);font-weight:400;margin-top:2px;}
+.fb1{top:-16px;left:16px;animation:fb1 4s ease-in-out infinite;}
+.fb2{bottom:24px;right:-16px;animation:fb2 5s ease-in-out infinite;}
+@keyframes fb1{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes fb2{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+/* ── PROBLEM ── */
+#problem{text-align:center;padding:72px 5%;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.prob-stat{font-family:var(--fd);font-size:clamp(34px,4.5vw,60px);font-weight:800;color:var(--white);letter-spacing:-2px;margin-bottom:14px;}
+.prob-stat span{color:var(--blue);}
+.app-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:32px 0 20px;flex-wrap:wrap;}
+.app-chip{padding:7px 18px;border-radius:999px;border:1px solid var(--gray3);font-size:13px;color:var(--gray2);opacity:.6;}
+.arr{color:var(--gray3);font-size:18px;}
+.ob-chip{padding:9px 24px;border-radius:999px;border:1px solid var(--blue);background:var(--blue-dim);font-size:14px;font-weight:700;color:var(--white);font-family:var(--fd);}
+.prob-sub{font-size:18px;color:var(--gray2);font-weight:300;}
+
+/* ── SHARED SECTION ── */
+section{padding:96px 5%;}
+.s-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+.s-title{font-family:var(--fd);font-size:clamp(30px,3.8vw,50px);font-weight:800;color:var(--white);letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;}
+.s-sub{font-size:16px;color:var(--gray2);max-width:500px;line-height:1.75;font-weight:300;}
+
+/* ── FEATURES ── */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px;}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:32px 28px;transition:all .3s;position:relative;overflow:hidden;cursor:default;}
+.feat-card::before{content:'';position:absolute;inset:0;border-radius:var(--rl);background:radial-gradient(circle at 20% 20%,var(--blue-dim),transparent 60%);opacity:0;transition:opacity .3s;}
+.feat-card:hover{border-color:rgba(67,97,238,.4);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.35);}
+.feat-card:hover::before{opacity:1;}
+.feat-icon{width:48px;height:48px;border-radius:13px;background:var(--blue-dim);border:1px solid rgba(67,97,238,.2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;position:relative;z-index:1;}
+.feat-title{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--white);margin-bottom:10px;position:relative;z-index:1;}
+.feat-desc{font-size:14px;color:var(--gray2);line-height:1.75;font-weight:300;position:relative;z-index:1;}
+.feat-tag{display:inline-block;margin-top:14px;font-size:11px;font-weight:600;color:var(--blue);letter-spacing:.04em;position:relative;z-index:1;}
+
+/* ── HOW ── */
+#how{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:52px;position:relative;}
+.how-grid::before{content:'';position:absolute;top:27px;left:calc(16.67% + 27px);right:calc(16.67% + 27px);height:1px;background:linear-gradient(90deg,var(--blue),transparent 50%,var(--blue));opacity:.3;}
+.how-step{padding:0 28px;text-align:center;}
+.how-step:first-child{padding-left:0;}
+.how-step:last-child{padding-right:0;}
+.step-num{width:54px;height:54px;border-radius:50%;background:var(--bg3);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:16px;font-weight:800;color:var(--blue);margin:0 auto 20px;position:relative;z-index:1;}
+.step-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.step-desc{font-size:13px;color:var(--gray2);line-height:1.7;font-weight:300;}
+
+/* ── TESTIMONIALS ── */
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px;}
+.test-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:28px 24px;transition:all .3s;}
+.test-card:hover{border-color:rgba(67,97,238,.3);transform:translateY(-3px);}
+.qmark{font-family:var(--fd);font-size:44px;color:var(--blue);line-height:.7;margin-bottom:16px;opacity:.5;}
+.qtext{font-size:14px;color:var(--gray1);line-height:1.8;font-weight:300;font-style:italic;margin-bottom:20px;}
+.qauthor strong{display:block;font-size:13px;color:var(--white);font-weight:600;margin-bottom:2px;}
+.qauthor span{font-size:12px;color:var(--gray2);}
+
+/* ── PRICING ── */
+#pricing{text-align:center;}
+.price-grid{display:grid;grid-template-columns:repeat(2,minmax(0,400px));gap:22px;justify-content:center;margin-top:52px;}
+.price-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:36px 32px;text-align:left;position:relative;transition:transform .3s;}
+.price-card:hover{transform:translateY(-4px);}
+.price-card.feat{border-color:var(--blue);background:linear-gradient(150deg,rgba(67,97,238,.07),var(--bg2));box-shadow:0 0 60px rgba(67,97,238,.1);}
+.pop-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);padding:4px 18px;background:var(--blue);border-radius:999px;font-size:11px;font-weight:700;color:var(--white);letter-spacing:.06em;white-space:nowrap;}
+.plan-name{font-size:12px;font-weight:700;color:var(--gray2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.plan-price{font-family:var(--fd);font-size:46px;font-weight:800;color:var(--white);letter-spacing:-2px;margin-bottom:4px;}
+.plan-price sub{font-size:16px;font-weight:400;color:var(--gray2);vertical-align:baseline;}
+.plan-period{font-size:13px;color:var(--gray2);margin-bottom:24px;}
+.plan-div{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.plan-feats{list-style:none;margin-bottom:28px;}
+.plan-feats li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--gray1);padding:6px 0;font-weight:300;}
+.plan-feats li::before{content:'✓';color:var(--green);font-weight:700;font-size:12px;margin-top:2px;flex-shrink:0;}
+.btn-plan{width:100%;padding:13px;border-radius:999px;font-family:var(--fb);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:block;text-align:center;}
+.bp-ghost{border:1px solid var(--gray3);background:transparent;color:var(--gray1);}
+.bp-ghost:hover{border-color:var(--blue);color:var(--white);}
+.bp-fill{border:none;background:var(--blue);color:var(--white);}
+.bp-fill:hover{box-shadow:0 8px 28px var(--blue-glow);opacity:.92;}
+
+/* ── CTA BANNER ── */
+#cta{text-align:center;padding:110px 5%;position:relative;overflow:hidden;}
+#cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:350px;background:radial-gradient(ellipse,rgba(67,97,238,.14),transparent 70%);pointer-events:none;}
+.cta-title{font-family:var(--fd);font-size:clamp(34px,4.5vw,60px);font-weight:800;color:var(--white);letter-spacing:-2px;line-height:1.1;margin-bottom:14px;position:relative;}
+.cta-sub{font-size:17px;color:var(--gray2);margin-bottom:36px;font-weight:300;position:relative;}
+
+/* ── FOOTER ── */
+footer{padding:60px 5% 36px;border-top:1px solid var(--border);display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px;}
+.foot-logo{font-family:var(--fd);font-size:20px;font-weight:800;color:var(--white);margin-bottom:10px;}
+.foot-logo span{color:var(--blue);}
+.foot-tag{font-size:13px;color:var(--gray2);line-height:1.65;font-weight:300;}
+.foot-col h4{font-size:12px;font-weight:700;color:var(--white);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.foot-col ul{list-style:none;}
+.foot-col ul li{margin-bottom:9px;}
+.foot-col ul li a{font-size:13px;color:var(--gray2);text-decoration:none;transition:color .2s;font-weight:300;}
+.foot-col ul li a:hover{color:var(--white);}
+.foot-bottom{border-top:1px solid var(--border);padding:22px 5%;display:flex;justify-content:space-between;align-items:center;}
+.foot-bottom p{font-size:12px;color:var(--gray2);font-weight:300;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:40px;width:90%;max-width:440px;position:relative;transform:translateY(20px);transition:transform .3s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--bg3);border:none;color:var(--gray2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:color .2s;}
+.modal-close:hover{color:var(--white);}
+.modal-title{font-family:var(--fd);font-size:24px;font-weight:800;color:var(--white);margin-bottom:6px;letter-spacing:-.5px;}
+.modal-sub{font-size:14px;color:var(--gray2);margin-bottom:28px;font-weight:300;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:12px;font-weight:600;color:var(--gray2);letter-spacing:.05em;margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:12px 16px;background:var(--bg3);border:1px solid var(--gray3);border-radius:10px;color:var(--white);font-family:var(--fb);font-size:14px;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--blue);}
+.form-input::placeholder{color:var(--gray2);}
+.modal-tabs{display:flex;gap:0;margin-bottom:24px;background:var(--bg3);border-radius:10px;padding:4px;}
+.mtab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:var(--gray2);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.mtab.active{background:var(--bg2);color:var(--white);}
+.form-btn{width:100%;padding:14px;border-radius:999px;background:var(--blue);color:var(--white);font-family:var(--fb);font-size:15px;font-weight:600;cursor:pointer;border:none;margin-top:8px;transition:all .2s;}
+.form-btn:hover{box-shadow:0 6px 24px var(--blue-glow);opacity:.92;}
+.divider-row{display:flex;align-items:center;gap:12px;margin:18px 0;}
+.divider-row::before,.divider-row::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider-row span{font-size:12px;color:var(--gray2);}
+.social-btns{display:flex;gap:10px;}
+.social-btn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--gray3);background:transparent;color:var(--gray1);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.social-btn:hover{border-color:var(--blue);color:var(--white);}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  #hero{flex-direction:column;padding-top:100px;}
+  .hero-right{width:100%;max-width:100%;}
+  .fb2{right:0;}
+  .feat-grid,.how-grid,.test-grid{grid-template-columns:1fr;}
+  .how-grid::before{display:none;}
+  .price-grid{grid-template-columns:1fr;}
+  footer{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
+  .dash-inner{height:420px;}
+}
+@media(max-width:480px){
+  footer{grid-template-columns:1fr;}
+  .foot-bottom{flex-direction:column;gap:6px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Obol<span>is</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Budget</a></li>
+    <li><a href="#features">Trade</a></li>
+    <li><a href="#features">Research</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-ghost" onclick="openModal('login')">Log In</button>
+    <button class="btn-primary" onclick="openModal('signup')">Start for free</button>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge">AI-Powered Financial Super-App</div>
+    <h1 class="hero-title">Your money.<br>Your market.<br><span class="hl">Your edge.</span></h1>
+    <p class="hero-sub">Obolis combines AI-powered budgeting, trading simulation, and market research in one platform — built for the next generation of investors.</p>
+    <div class="hero-cta">
+      <button class="btn-lg" onclick="openModal('signup')">Start for free</button>
+      <span class="hero-note">No credit card needed</span>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-val" id="counter1">0</span><span class="hstat-label">Active users</span></div>
+      <div class="hstat"><span class="hstat-val" id="counter2">0</span><span class="hstat-label">Assets tracked</span></div>
+      <div class="hstat"><span class="hstat-val" id="counter3">0</span><span class="hstat-label">AI insights daily</span></div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="dash-wrap">
+      <div class="glow-orb"></div>
+      <div class="float-badge fb1">📈 Portfolio +12.4%<span>This month · Jin-ho</span></div>
+      <div class="dashboard">
+        <div class="dash-inner">
+          <!-- sidebar -->
+          <div class="dash-sidebar">
+            <div class="side-logo">OBS</div>
+            <div class="side-btn active" onclick="switchPanel('budget',this)" title="Budget">💸</div>
+            <div class="side-btn" onclick="switchPanel('trade',this)" title="Trade">📈</div>
+            <div class="side-btn" onclick="switchPanel('research',this)" title="Research">🔍</div>
+            <div style="flex:1;"></div>
+            <div class="side-btn" onclick="openModal('login')" title="Account">👤</div>
+          </div>
+          <!-- main -->
+          <div class="dash-main">
+            <div class="dash-topbar">
+              <span class="dash-topbar-title" id="panel-title">💸 Budget Overview</span>
+              <div class="dash-topbar-right">
+                <div style="position:relative;">
+                  <div class="dash-avatar">JH</div>
+                  <div class="notif-dot" style="position:absolute;top:-2px;right:-2px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BUDGET PANEL -->
+            <div class="dash-panel active" id="panel-budget">
+              <div class="row3">
+                <div class="dw">
+                  <div class="dw-header"><span class="dw-title">Net Worth</span><span class="dw-badge badge-green">+8.2%</span></div>
+                  <div class="dw-val">₩24.8M</div>
+                  <div class="dw-sub">All accounts</div>
+                </div>
+                <div class="dw">
+                  <div class="dw-header"><span class="dw-title">Monthly Left</span><span class="dw-badge badge-green">On track</span></div>
+                  <div class="dw-val">₩340K</div>
+                  <div class="dw-sub">of ₩1.2M budget</div>
+                </div>
+                <div class="dw">
+                  <div class="dw-header"><span class="dw-title">Savings Goal</span><span class="dw-badge badge-blue">72%</span></div>
+                  <div class="dw-val">₩7.2M</div>
+                  <div class="dw-sub">of ₩10M target</div>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Cash Flow · 6 months</span></div>
+                <svg class="mchart" viewBox="0 0 400 64" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#4361EE" stop-opacity=".3"/>
+                      <stop offset="100%" stop-color="#4361EE" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0 50 L66 44 L132 38 L200 42 L266 28 L332 18 L400 8" fill="none" stroke="#4361EE" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M0 50 L66 44 L132 38 L200 42 L266 28 L332 18 L400 8 L400 64 L0 64Z" fill="url(#cg1)"/>
+                </svg>
+                <div style="display:flex;justify-content:space-between;padding:0 2px;">
+                  <span style="font-size:10px;color:var(--gray2);">Jul</span>
+                  <span style="font-size:10px;color:var(--gray2);">Aug</span>
+                  <span style="font-size:10px;color:var(--gray2);">Sep</span>
+                  <span style="font-size:10px;color:var(--gray2);">Oct</span>
+                  <span style="font-size:10px;color:var(--gray2);">Nov</span>
+                  <span style="font-size:10px;color:var(--gray2);">Dec</span>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Spending by Category</span></div>
+                <div class="prog-wrap">
+                  <div class="prog-label"><span>🍜 Food & Dining</span><span style="color:var(--red);">₩420K / ₩350K</span></div>
+                  <div class="prog-track"><div class="prog-fill" style="width:120%;background:var(--red);"></div></div>
+                </div>
+                <div class="prog-wrap" style="margin-top:10px;">
+                  <div class="prog-label"><span>🚇 Transport</span><span>₩95K / ₩150K</span></div>
+                  <div class="prog-track"><div class="prog-fill" style="width:63%;background:var(--green);"></div></div>
+                </div>
+                <div class="prog-wrap" style="margin-top:10px;">
+                  <div class="prog-label"><span>🛍 Shopping</span><span>₩280K / ₩300K</span></div>
+                  <div class="prog-track"><div class="prog-fill" style="width:93%;background:var(--amber);"></div></div>
+                </div>
+                <div class="prog-wrap" style="margin-top:10px;">
+                  <div class="prog-label"><span>☕ Coffee</span><span>₩62K / ₩80K</span></div>
+                  <div class="prog-track"><div class="prog-fill" style="width:78%;background:var(--blue);"></div></div>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Recent Transactions</span></div>
+                <div class="tx-list">
+                  <div class="tx-row">
+                    <div class="tx-icon" style="background:var(--red-dim);">🍜</div>
+                    <div class="tx-desc"><div class="tx-name">Hongdae Ramen</div><div class="tx-date">Today, 12:34</div></div>
+                    <div class="tx-amount" style="color:var(--red);">−₩13,500</div>
+                  </div>
+                  <div class="tx-row">
+                    <div class="tx-icon" style="background:var(--green-dim);">💰</div>
+                    <div class="tx-desc"><div class="tx-name">Part-time salary</div><div class="tx-date">Dec 1</div></div>
+                    <div class="tx-amount" style="color:var(--green);">+₩800,000</div>
+                  </div>
+                  <div class="tx-row">
+                    <div class="tx-icon" style="background:var(--blue-dim);">☕</div>
+                    <div class="tx-desc"><div class="tx-name">Starbucks Sinchon</div><div class="tx-date">Nov 30</div></div>
+                    <div class="tx-amount" style="color:var(--red);">−₩6,800</div>
+                  </div>
+                  <div class="tx-row">
+                    <div class="tx-icon" style="background:var(--amber-dim);">🛍</div>
+                    <div class="tx-desc"><div class="tx-name">Musinsa</div><div class="tx-date">Nov 29</div></div>
+                    <div class="tx-amount" style="color:var(--red);">−₩89,000</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ai-bar">
+                <div class="ai-icon-w">✦</div>
+                <div class="ai-text"><strong>AI Forecast:</strong> Based on your patterns, you'll save ₩180,000 this month. Food spending is 20% above average — consider meal prep this week.</div>
+              </div>
+            </div>
+
+            <!-- TRADE PANEL -->
+            <div class="dash-panel" id="panel-trade">
+              <div class="row2">
+                <div class="dw">
+                  <div class="dw-header"><span class="dw-title">Portfolio Value</span><span class="dw-badge badge-green">+14.2%</span></div>
+                  <div class="dw-val">₩8.4M</div>
+                  <div class="dw-sub">All time return</div>
+                </div>
+                <div class="dw">
+                  <div class="dw-header"><span class="dw-title">Risk Score</span><span class="dw-badge badge-amber">Moderate</span></div>
+                  <div class="dw-val" style="font-size:20px;">6.2 / 10</div>
+                  <div class="dw-sub">Sharpe ratio: 1.34</div>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Portfolio Allocation</span></div>
+                <div class="donut-wrap">
+                  <svg width="90" height="90" viewBox="0 0 90 90">
+                    <circle cx="45" cy="45" r="35" fill="none" stroke="#4361EE" stroke-width="14" stroke-dasharray="110 110" stroke-dashoffset="0" transform="rotate(-90 45 45)"/>
+                    <circle cx="45" cy="45" r="35" fill="none" stroke="#0fba74" stroke-width="14" stroke-dasharray="55 165" stroke-dashoffset="-110" transform="rotate(-90 45 45)"/>
+                    <circle cx="45" cy="45" r="35" fill="none" stroke="#f59e0b" stroke-width="14" stroke-dasharray="33 187" stroke-dashoffset="-165" transform="rotate(-90 45 45)"/>
+                    <circle cx="45" cy="45" r="35" fill="none" stroke="#f04444" stroke-width="14" stroke-dasharray="22 198" stroke-dashoffset="-198" transform="rotate(-90 45 45)"/>
+                  </svg>
+                  <div class="donut-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:#4361EE;"></div>Tech<div class="legend-val">50%</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#0fba74;"></div>Finance<div class="legend-val">25%</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div>Crypto<div class="legend-val">15%</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#f04444;"></div>Energy<div class="legend-val">10%</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Holdings</span></div>
+                <div class="asset-list">
+                  <div class="asset-row">
+                    <div class="asset-icon" style="background:var(--blue-dim);color:var(--blue);">S</div>
+                    <div class="asset-name"><div class="asset-label">Samsung Electronics</div><div class="asset-ticker">005930.KS · 12 shares</div></div>
+                    <div class="asset-right"><div class="asset-price">₩74,200</div><div class="asset-chg chg-up">+2.34%</div></div>
+                    <div class="spark">
+                      <div class="spark-bar" style="height:40%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:55%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:45%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:70%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:90%;background:var(--green);"></div>
+                    </div>
+                  </div>
+                  <div class="asset-row">
+                    <div class="asset-icon" style="background:var(--green-dim);color:var(--green);">A</div>
+                    <div class="asset-name"><div class="asset-label">Apple Inc.</div><div class="asset-ticker">AAPL · 5 shares</div></div>
+                    <div class="asset-right"><div class="asset-price">$189.40</div><div class="asset-chg chg-up">+0.87%</div></div>
+                    <div class="spark">
+                      <div class="spark-bar" style="height:60%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:50%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:75%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:65%;background:var(--green);"></div>
+                      <div class="spark-bar" style="height:80%;background:var(--green);"></div>
+                    </div>
+                  </div>
+                  <div class="asset-row">
+                    <div class="asset-icon" style="background:var(--amber-dim);color:var(--amber);">B</div>
+                    <div class="asset-name"><div class="asset-label">Bitcoin</div><div class="asset-ticker">BTC · 0.12 BTC</div></div>
+                    <div class="asset-right"><div class="asset-price">$43,200</div><div class="asset-chg chg-dn">−1.24%</div></div>
+                    <div class="spark">
+                      <div class="spark-bar" style="height:90%;background:var(--red);"></div>
+                      <div class="spark-bar" style="height:70%;background:var(--red);"></div>
+                      <div class="spark-bar" style="height:80%;background:var(--red);"></div>
+                      <div class="spark-bar" style="height:55%;background:var(--red);"></div>
+                      <div class="spark-bar" style="height:40%;background:var(--red);"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ai-bar">
+                <div class="ai-icon-w">✦</div>
+                <div class="ai-text"><strong>AI Trade Coach:</strong> Your tech allocation is 50% — consider rebalancing. Adding ₩500K to KOSPI index would reduce your risk score from 6.2 to 5.1.</div>
+              </div>
+            </div>
+
+            <!-- RESEARCH PANEL -->
+            <div class="dash-panel" id="panel-research">
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Market Pulse</span><span class="dw-badge badge-green">Markets Open</span></div>
+                <div class="row3" style="margin-top:10px;">
+                  <div>
+                    <div style="font-size:10px;color:var(--gray2);margin-bottom:3px;">KOSPI</div>
+                    <div style="font-family:var(--fd);font-size:15px;font-weight:700;color:var(--white);">2,634.8</div>
+                    <div style="font-size:11px;color:var(--green);">+0.42%</div>
+                  </div>
+                  <div>
+                    <div style="font-size:10px;color:var(--gray2);margin-bottom:3px;">NASDAQ</div>
+                    <div style="font-family:var(--fd);font-size:15px;font-weight:700;color:var(--white);">14,827</div>
+                    <div style="font-size:11px;color:var(--red);">−0.18%</div>
+                  </div>
+                  <div>
+                    <div style="font-size:10px;color:var(--gray2);margin-bottom:3px;">BTC/USD</div>
+                    <div style="font-family:var(--fd);font-size:15px;font-weight:700;color:var(--white);">43,204</div>
+                    <div style="font-size:11px;color:var(--red);">−1.24%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">Samsung · 30D Chart</span><span class="dw-badge badge-green">Bullish</span></div>
+                <div class="candle-area" id="candleChart"></div>
+                <div style="display:flex;justify-content:space-between;padding:0 2px;">
+                  <span style="font-size:9px;color:var(--gray2);">Nov 1</span>
+                  <span style="font-size:9px;color:var(--gray2);">Nov 15</span>
+                  <span style="font-size:9px;color:var(--gray2);">Dec 1</span>
+                </div>
+              </div>
+              <div class="dw">
+                <div class="dw-header"><span class="dw-title">AI News Sentiment</span></div>
+                <div class="news-list">
+                  <div class="news-item">
+                    <div class="news-top">
+                      <span class="news-headline">Samsung unveils next-gen semiconductor roadmap, targets 2nm by 2025</span>
+                      <span class="news-sentiment sent-bull">Bullish</span>
+                    </div>
+                    <div class="news-meta">Reuters · 2h ago · AI score: 8.4/10</div>
+                  </div>
+                  <div class="news-item">
+                    <div class="news-top">
+                      <span class="news-headline">Fed signals potential rate cuts in Q1 2025, markets react positively</span>
+                      <span class="news-sentiment sent-bull">Bullish</span>
+                    </div>
+                    <div class="news-meta">Bloomberg · 4h ago · AI score: 7.1/10</div>
+                  </div>
+                  <div class="news-item">
+                    <div class="news-top">
+                      <span class="news-headline">Bitcoin ETF approval uncertainty continues to weigh on crypto markets</span>
+                      <span class="news-sentiment sent-bear">Bearish</span>
+                    </div>
+                    <div class="news-meta">CoinDesk · 6h ago · AI score: 3.2/10</div>
+                  </div>
+                  <div class="news-item">
+                    <div class="news-top">
+                      <span class="news-headline">KOSPI holds steady amid global volatility, foreign investors return</span>
+                      <span class="news-sentiment sent-neut">Neutral</span>
+                    </div>
+                    <div class="news-meta">Yonhap · 8h ago · AI score: 5.5/10</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ai-bar">
+                <div class="ai-icon-w">✦</div>
+                <div class="ai-text"><strong>AI Analyst:</strong> Samsung's semiconductor roadmap is a strong signal. Q3 earnings beat expectations by 12%. Analyst consensus: Buy (14/18 analysts). Target price: ₩82,000.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float-badge fb2">✦ AI forecast ready<span>3-month outlook</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ────────────────────────────────────────────── -->
+<section id="problem">
+  <p class="prob-stat">Most investors use <span>4+ apps</span><br>to manage their money.</p>
+  <div class="app-row">
+    <span class="app-chip">KakaoBank</span>
+    <span class="arr">+</span>
+    <span class="app-chip">Excel</span>
+    <span class="arr">+</span>
+    <span class="app-chip">Naver Finance</span>
+    <span class="arr">+</span>
+    <span class="app-chip">Robinhood</span>
+    <span class="arr">→</span>
+    <span class="ob-chip">Obolis</span>
+  </div>
+  <p class="prob-sub">One platform. Three pillars. Infinite clarity.</p>
+</section>
+
+<!-- ── FEATURES ───────────────────────────────────────────── -->
+<section id="features">
+  <div class="reveal">
+    <span class="s-label">Core Features</span>
+    <h2 class="s-title">Everything you need.<br>Nothing you don't.</h2>
+    <p class="s-sub">Three AI-powered pillars that work together — not in separate tabs.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">💸</div>
+      <h3 class="feat-title">Budget Smarter</h3>
+      <p class="feat-desc">Stop being surprised at the end of the month. Obolis predicts your cash flow 3 months ahead based on real spending patterns, so you can plan before problems happen.</p>
+      <span class="feat-tag">AI Cash Forecast →</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">📈</div>
+      <h3 class="feat-title">Trade Without Fear</h3>
+      <p class="feat-desc">Start investing without risking a single won. Practice with ₩10M in virtual funds, then let AI explain exactly what that trade would have done to your real portfolio.</p>
+      <span class="feat-tag">Paper Simulator →</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🔍</div>
+      <h3 class="feat-title">Research Like a Pro</h3>
+      <p class="feat-desc">Earnings reports are written for finance professionals. Obolis AI reads them and returns a plain-language summary in under 30 seconds — no jargon, no confusion.</p>
+      <span class="feat-tag">AI Analyst Reports →</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────────────── -->
+<section id="how">
+  <div class="reveal" style="text-align:center;">
+    <span class="s-label">How It Works</span>
+    <h2 class="s-title">Up and running in 3 steps.</h2>
+  </div>
+  <div class="how-grid">
+    <div class="how-step reveal">
+      <div class="step-num">01</div>
+      <h3 class="step-title">Build your profile</h3>
+      <p class="step-desc">Answer 5 questions about your experience and goals. Obolis AI sets your risk profile and personalises every recommendation from day one.</p>
+    </div>
+    <div class="how-step reveal">
+      <div class="step-num">02</div>
+      <h3 class="step-title">Connect your financial life</h3>
+      <p class="step-desc">Link your bank for automatic tracking or enter data manually. Add existing investments or start from zero — your net worth overview is instant.</p>
+    </div>
+    <div class="how-step reveal">
+      <div class="step-num">03</div>
+      <h3 class="step-title">Let AI work for you</h3>
+      <p class="step-desc">From your first login you get a 3-month forecast, a portfolio risk score, AI-scored news, and trade feedback every time you test an idea.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────────────────────── -->
+<section id="testimonials">
+  <div class="reveal">
+    <span class="s-label">What Users Say</span>
+    <h2 class="s-title">Trusted by the next<br>generation of investors.</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="qmark">"</div>
+      <p class="qtext">I'm a finance major and I still learned things from Obolis I didn't know. The AI Analyst Reports break down earnings calls better than most YouTube videos I've watched.</p>
+      <div class="qauthor"><strong>Soyeon K.</strong><span>22 · Finance Major, Yonsei University</span></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="qmark">"</div>
+      <p class="qtext">I used to ignore my budget because every app made it a chore. Obolis shows me one card: ₩340,000 left this month, on track. That's all I needed.</p>
+      <div class="qauthor"><strong>Minjun P.</strong><span>24 · Graphic Designer</span></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="qmark">"</div>
+      <p class="qtext">I was using Kakao, Excel, and Naver Finance at the same time. Switching to Obolis felt like finally getting one remote control for everything.</p>
+      <div class="qauthor"><strong>Haerin C.</strong><span>27 · Marketing Coordinator</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ────────────────────────────────────────────── -->
+<section id="pricing">
+  <div class="reveal">
+    <span class="s-label">Pricing</span>
+    <h2 class="s-title">Simple pricing.<br>No surprises.</h2>
+    <p class="s-sub" style="margin:0 auto;">Start free. Upgrade only when you're ready.</p>
+  </div>
+  <div class="price-grid">
+    <div class="price-card reveal">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">₩0 <sub>/ month</sub></div>
+      <div class="plan-period">Free forever — no credit card needed</div>
+      <hr class="plan-div"/>
+      <ul class="plan-feats">
+        <li>Full budget tracking</li>
+        <li>Income &amp; expense log</li>
+        <li>Savings goals</li>
+        <li>Paper trading simulator</li>
+        <li>Basic market overview</li>
+        <li>Watchlist (up to 10 assets)</li>
+      </ul>
+      <button class="btn-plan bp-ghost" onclick="openModal('signup')">Get started free</button>
+    </div>
+    <div class="price-card feat reveal">
+      <div class="pop-badge">MOST POPULAR</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">₩9,900 <sub>/ month</sub></div>
+      <div class="plan-period">Everything in Free, plus AI features</div>
+      <hr class="plan-div"/>
+      <ul class="plan-feats">
+        <li>AI Cash Forecast (3-month)</li>
+        <li>AI Trade Coach &amp; risk scoring</li>
+        <li>AI Analyst Reports</li>
+        <li>Broker API integration</li>
+        <li>Unlimited watchlist</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="btn-plan bp-fill" onclick="openModal('signup')">Start free trial</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────── -->
+<section id="cta">
+  <h2 class="cta-title reveal">Start investing<br>smarter today.</h2>
+  <p class="cta-sub reveal">Join thousands of young investors already using Obolis.</p>
+  <button class="btn-lg reveal" onclick="openModal('signup')">Start for free — no credit card needed</button>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div>
+    <div class="foot-logo">Obol<span>is</span></div>
+    <p class="foot-tag">Your money. Your market.<br>Your edge.</p>
+  </div>
+  <div class="foot-col">
+    <h4>Product</h4>
+    <ul>
+      <li><a href="#features">Budget</a></li>
+      <li><a href="#features">Trade</a></li>
+      <li><a href="#features">Research</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+  </div>
+  <div class="foot-col">
+    <h4>Company</h4>
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+  <div class="foot-col">
+    <h4>Legal</h4>
+    <ul>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Cookie Policy</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="foot-bottom">
+  <p>© 2025 Obolis. All rights reserved.</p>
+  <p>Built for the next generation of investors.</p>
+</div>
+
+<!-- ── AUTH MODAL ─────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title">Welcome back</div>
+    <div class="modal-sub" id="modal-sub">Sign in to your Obolis account</div>
+    <div class="modal-tabs">
+      <button class="mtab" id="tab-login" onclick="switchTab('login')">Log In</button>
+      <button class="mtab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+    <div id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-input" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••"/>
+      </div>
+      <button class="form-btn" onclick="handleAuth()">Log In</button>
+      <div class="divider-row"><span>or continue with</span></div>
+      <div class="social-btns">
+        <button class="social-btn" onclick="handleAuth()">🇬 Google</button>
+        <button class="social-btn" onclick="handleAuth()">🍎 Apple</button>
+        <button class="social-btn" onclick="handleAuth()">🐱 Kakao</button>
+      </div>
+    </div>
+    <div id="signup-form" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Full name</label>
+        <input type="text" class="form-input" placeholder="Jin-ho Park"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-input" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Min. 8 characters"/>
+      </div>
+      <button class="form-btn" onclick="handleAuth()">Create free account</button>
+      <div class="divider-row"><span>or continue with</span></div>
+      <div class="social-btns">
+        <button class="social-btn" onclick="handleAuth()">🇬 Google</button>
+        <button class="social-btn" onclick="handleAuth()">🍎 Apple</button>
+        <button class="social-btn" onclick="handleAuth()">🐱 Kakao</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ─────────────────────────────────────────────── -->
+<script>
+// ── Panel switcher ────────────────────────────────────────
+const panels = {
+  budget:   { el: document.getElementById('panel-budget'),   title: '💸 Budget Overview' },
+  trade:    { el: document.getElementById('panel-trade'),    title: '📈 Portfolio & Trade' },
+  research: { el: document.getElementById('panel-research'), title: '🔍 Market Research' },
+};
+
+function switchPanel(name, btn) {
+  Object.values(panels).forEach(p => p.el.classList.remove('active'));
+  panels[name].el.classList.add('active');
+  document.getElementById('panel-title').textContent = panels[name].title;
+  document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ── Candle chart generator ────────────────────────────────
+function buildCandleChart() {
+  const el = document.getElementById('candleChart');
+  if (!el) return;
+  const data = [
+    [62,70,58,68],[65,72,62,70],[68,74,65,71],[70,76,67,74],
+    [72,78,69,75],[71,77,68,74],[73,80,70,77],[75,82,72,79],
+    [74,81,71,78],[76,83,73,80],[78,85,75,82],[77,84,74,81],
+    [79,86,76,83],[81,88,78,85],[80,87,77,84]
+  ];
+  const maxH = 86, minH = 58, range = maxH - minH;
+  el.innerHTML = data.map(([o,h,l,c]) => {
+    const isUp = c >= o;
+    const color = isUp ? '#0fba74' : '#f04444';
+    const bodyTop = ((maxH - Math.max(o,c)) / range * 76).toFixed(1);
+    const bodyH = Math.max(2, ((Math.abs(c-o)) / range * 76).toFixed(1));
+    const wickTop = ((maxH - h) / range * 76).toFixed(1);
+    const wickH = ((h - l) / range * 76).toFixed(1);
+    return `<div class="candle-wrap">
+      <div class="candle-wick" style="height:${wickTop}px;background:transparent;"></div>
+      <div class="candle-wick" style="height:${wickH}px;background:${color};"></div>
+    </div>`;
+  }).join('');
+  // Simpler visual using flex bars
+  el.innerHTML = '';
+  data.forEach(([o,h,l,c]) => {
+    const isUp = c >= o;
+    const color = isUp ? '#0fba74' : '#f04444';
+    const totalH = 80;
+    const wickH = Math.max(4, Math.round((h-l)/range * totalH));
+    const bodyH = Math.max(3, Math.round(Math.abs(c-o)/range * totalH));
+    const wrap = document.createElement('div');
+    wrap.className = 'candle-wrap';
+    wrap.style.cssText = `display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:1;height:${totalH}px;gap:0;`;
+    const spacer = document.createElement('div');
+    spacer.style.cssText = `flex:1;`;
+    const wick = document.createElement('div');
+    wick.style.cssText = `width:1.5px;height:${wickH}px;background:${color};border-radius:1px;`;
+    const body = document.createElement('div');
+    body.style.cssText = `width:9px;height:${bodyH}px;background:${color};border-radius:2px;`;
+    wrap.appendChild(spacer);
+    wrap.appendChild(wick);
+    wrap.appendChild(body);
+    el.appendChild(wrap);
+  });
+}
+
+// ── Modal ──────────────────────────────────────────────────
+function openModal(type) {
+  document.getElementById('modal').classList.add('open');
+  switchTab(type);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+
+function switchTab(type) {
+  const isLogin = type === 'login';
+  document.getElementById('login-form').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signup-form').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('tab-login').classList.toggle('active', isLogin);
+  document.getElementById('tab-signup').classList.toggle('active', !isLogin);
+  document.getElementById('modal-title').textContent = isLogin ? 'Welcome back' : 'Create your account';
+  document.getElementById('modal-sub').textContent = isLogin ? 'Sign in to your Obolis account' : 'Start for free — no credit card needed';
+}
+
+function handleAuth() {
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = 'Redirecting...';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✓ Success!';
+    setTimeout(() => { closeModal(); btn.textContent = orig; btn.disabled = false; }, 900);
+  }, 1000);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Scroll reveal ──────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 90);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Nav scroll ─────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.background =
+    window.scrollY > 40 ? 'rgba(8,8,15,0.96)' : 'rgba(8,8,15,0.8)';
+});
+
+// ── Animated counters ──────────────────────────────────────
+function animateCounter(el, target, suffix, duration=2000) {
+  let start = 0;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = Math.floor(start).toLocaleString() + suffix;
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(document.getElementById('counter1'), 12400, '+');
+      animateCounter(document.getElementById('counter2'), 340, 'K+');
+      animateCounter(document.getElementById('counter3'), 48, 'K+');
+      counterObserver.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+counterObserver.observe(document.getElementById('counter1'));
+
+// ── Init ───────────────────────────────────────────────────
+buildCandleChart();
+</script>
+</body>
+</html>
